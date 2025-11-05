@@ -1,20 +1,21 @@
-// @/components/ui/input-otp.tsx
 "use client";
 
 import * as React from "react";
 import { OTPInput, OTPInputContext } from "input-otp";
 import { MinusIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const toPersianDigits = (str: string) =>
-  str.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+import { toLatinDigits, toPersianDigits } from "@/shared/utils/functions";
 
 function InputOTP({
   className,
   containerClassName,
+  value,
+  onChange,
   ...props
 }: React.ComponentProps<typeof OTPInput> & {
   containerClassName?: string;
+  value: string;
+  onChange: (val: string) => void;
 }) {
   return (
     <OTPInput
@@ -28,6 +29,11 @@ function InputOTP({
         "flex items-center justify-center gap-8",
         containerClassName
       )}
+      value={value}
+      onChange={(val) => {
+        const latinVal = toLatinDigits(val);
+        onChange(latinVal);
+      }}
       {...props}
     />
   );
@@ -52,9 +58,7 @@ function InputOTPSlot({
   index,
   className,
   ...props
-}: React.ComponentProps<"div"> & {
-  index: number;
-}) {
+}: React.ComponentProps<"div"> & { index: number }) {
   const inputOTPContext = React.useContext(OTPInputContext);
   const slot = inputOTPContext?.slots[index] ?? {};
   const { char, hasFakeCaret, isActive } = slot;
@@ -88,7 +92,6 @@ function InputOTPSlot({
     </div>
   );
 }
-
 
 function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
   return (
