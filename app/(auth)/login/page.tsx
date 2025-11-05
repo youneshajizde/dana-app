@@ -1,4 +1,3 @@
-
 import LoginForm from "@/features/auth/components/LoginForm";
 import TopNavigation from "@/shared/components/molecules/TopNavigation";
 import Image from "next/image";

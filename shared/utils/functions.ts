@@ -11,10 +11,7 @@ export const safeFetch = async <T>(
   options?: RequestInit
 ): Promise<{ data: T | null; error: string | null }> => {
   try {
-    const fullUrl = `${process.env.NEXT_PUBLIC_API_URL}${url}`;
-    console.log("Fetching:", fullUrl, options); 
-
-    const res = await fetch(fullUrl, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
       headers: {
         "Content-Type": "application/json",
         ...options?.headers,
@@ -22,21 +19,18 @@ export const safeFetch = async <T>(
       ...options,
     });
 
-    let json: any = null;
-    try {
-      json = await res.json();
-    } catch {
-     
-    }
+    const json = await res.json().catch(() => null);
 
     if (!res.ok) {
-      const message =
-        json?.meta?.message || json?.message || `HTTP ${res.status}`;
-      return { data: null, error: message };
+      return {
+        data: json as T,
+        error: json?.meta?.message || json?.message || "خطا",
+      };
     }
 
     return { data: json as T, error: null };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    return { data: null, error: err?.message ?? "خطای ناشناخته" };
+    return { data: null, error: err.message || "خطای ناشناخته" };
   }
 };

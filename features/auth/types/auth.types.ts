@@ -9,5 +9,3 @@ export type SendOTPResponse = {
     requestId: string;
   };
 };
-
-

@@ -1,10 +1,21 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { sendOTPAction } from "../actions/auth.actions";
 
-const LoginForm = () => {
+export default function LoginForm() {
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(fd: FormData) {
+    const result = await sendOTPAction(fd);
+    if (result?.error) {
+      setError(result.error);
+    }
+  }
   return (
-    <form action={sendOTPAction} className="mt-6 flex flex-col flex-1 h-screen">
+    <form action={handleSubmit} className="mt-6 flex flex-col flex-1 h-screen">
       <div className="space-y-3 flex-1 overflow-y-auto">
         <p className="text-xs">
           <span className="text-sm font-medium">شماره موبایل</span> . برای ورود
@@ -21,6 +32,7 @@ const LoginForm = () => {
           transition duration-200"
         />
 
+        {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
         <p className="text-xs">
           با ورود ،{" "}
           <span className="text-primary underline">قوانین و مقررات</span>{" "}
@@ -38,6 +50,4 @@ const LoginForm = () => {
       </div>
     </form>
   );
-};
-
-export default LoginForm;
+}
