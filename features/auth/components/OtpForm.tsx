@@ -18,10 +18,12 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       action={async (fd: FormData) => {
         fd.set("otp", otp);
         fd.set("mobile", mobile);
+        console.log("Mobile:", mobile);
+        console.log("OTP:", otp);
         const result = await verifyOTPAction(fd);
 
         if (result.error) {
-          toast.error(result.error) 
+          toast.error(result.error);
         } else {
           toast.success("OTP verified successfully!");
         }
@@ -57,7 +59,6 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             </InputOTP>
           </div>
         </section>
-
 
         <p className="text-xs text-white/30">
           درخواست دوباره کد تا{" "}
