@@ -2,9 +2,9 @@ import OtpForm from "@/features/auth/components/OtpForm";
 import TopNavigation from "@/shared/components/molecules/TopNavigation";
 import Image from "next/image";
 
-const OtpPage = ({ searchParams }: { searchParams: { mobile?: string } }) => {
-  const mobile = searchParams.mobile ?? "";
-
+const OtpPage = async ({ searchParams }: { searchParams: { mobile?: string } }) => {
+const params = await searchParams;
+  const mobile = params.mobile ?? "";
   return (
     <div className="min-h-screen flex flex-col px-3 pt-16">
       <TopNavigation />

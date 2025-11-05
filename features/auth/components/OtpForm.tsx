@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useState } from "react";
 import { verifyOTPAction } from "../actions/auth.actions";
+import toast from "react-hot-toast";
 
 const OtpForm = ({ mobile }: { mobile: string }) => {
   const [otp, setOtp] = useState("");
@@ -18,7 +19,12 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         fd.set("otp", otp);
         fd.set("mobile", mobile);
         const result = await verifyOTPAction(fd);
-        console.log(result);
+
+        if (result.error) {
+          toast.error(result.error) 
+        } else {
+          toast.success("OTP verified successfully!");
+        }
       }}
       className="mt-6 flex flex-col flex-1 h-screen"
     >
@@ -51,6 +57,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             </InputOTP>
           </div>
         </section>
+
 
         <p className="text-xs text-white/30">
           درخواست دوباره کد تا{" "}
